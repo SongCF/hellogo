@@ -2,6 +2,12 @@ package main
 
 import "fmt"
 
+type t struct {
+	m map[int]int
+}
+
+var gm = make(map[int]*t)
+
 func main() {
 	m := make(map[string]int)
 	m["a"] = 1
@@ -17,5 +23,12 @@ func main() {
 	for k := range m {
 		fmt.Printf("k:%v\n", k)
 	}
+	fmt.Println("==============")
+
+	fmt.Println("=======struct init")
+	gm[1] = &t{}
+	gm[1].m = make(map[int]int) //necessary
+	gm[1].m[1] = 1
+	fmt.Println(gm[1].m[1])
 	fmt.Println("==============")
 }
