@@ -24,12 +24,13 @@ func main() {
 func p_c(ch chan int) {
 	for i := 1; ; i++ {
 		fmt.Println("======")
-		panic_recover(ch, i)
+		i, inter := panic_recover(ch, i)
+		fmt.Printf("i:%v, inter:%v\n", i, inter)
 		time.Sleep(time.Second * 3)
 	}
 }
 
-func panic_recover(ch chan int, i int) {
+func panic_recover(ch chan int, i int) (int, interface{}) {
 	defer func() {
 		fmt.Println("defer...")
 		if err := recover(); err != nil {
@@ -38,5 +39,6 @@ func panic_recover(ch chan int, i int) {
 		fmt.Println("defer...end")
 	}()
 
-	ch <- i
+	ch <- i // ！！！！！！panic！！！！！！！！！！！
+	return 10, ch  //测试panic之后返回值是什么
 }
