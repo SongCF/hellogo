@@ -31,4 +31,11 @@ func main() {
 	gm[1].m[1] = 1
 	fmt.Println(gm[1].m[1])
 	fmt.Println("==============")
+
+
+	fmt.Println("==============delete")
+	delMap := make(map[string]int)
+	delMap["1"] = 1
+	delete(delMap, "1")
+	delete(delMap, "1")  //delete none: ok
 }

@@ -16,13 +16,14 @@ func main() {
 				close(ch)
 			}
 		default:
-			//fmt.Println("default")
+			break
 		}
 	}
+	select {}
 }
 
 func p_c(ch chan int) {
-	for i := 1; ; i++ {
+	for i := 1; i <= 3; i++ {
 		fmt.Println("======")
 		i, inter := panic_recover(ch, i)
 		fmt.Printf("i:%v, inter:%v\n", i, inter)
@@ -39,6 +40,8 @@ func panic_recover(ch chan int, i int) (int, interface{}) {
 		fmt.Println("defer...end")
 	}()
 
+	defer fmt.Println("defer 11111")  //测试panic时该defer会不会执行 ：会执行！
+
 	ch <- i // ！！！！！！panic！！！！！！！！！！！
-	return 10, ch  //测试panic之后返回值是什么
+	return 10, ch  //测试panic之后返回值是什么  : 返回该类型的默认值
 }
