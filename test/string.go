@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strings"
+	"os"
 )
 
 type Str struct {
@@ -70,4 +72,15 @@ func main() {
 
 	}
 
+	functest()
+}
+
+func functest() {
+	fmt.Println("test strings method")
+	fmt.Println(strings.TrimSpace("        abc a "))
+
+	var s string = "log1/log2/passport_server"
+	idx := strings.LastIndex(s, "/")
+	fmt.Println(s[:idx])
+	//os.MkdirAll(s[:idx], os.ModeDir)
 }

@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type ttt struct {
 	i int
@@ -17,4 +20,14 @@ func main() {
 	} else {
 		fmt.Println("false")
 	}
+
+	//time
+	printTime()
+}
+
+func printTime(){
+	fmt.Println("=========printTime")
+	t := time.Now()
+	str := fmt.Sprintf("%v-%04d-%02d-%02d.log", "filename", t.Year(), t.Month(), t.Day())
+	fmt.Println(str)
 }
