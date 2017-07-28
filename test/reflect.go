@@ -11,6 +11,18 @@ type user struct {
 	age int `json:"ag"`
 	child []int  `json:"ch"`
 }
+type user2 struct {
+	name string `json:"nm"`
+	age int `json:"ag"`
+	child []int  `json:"ch"`
+	TAuth
+}
+type TAuth struct {
+	UID      int64  `json:"uid"`
+	Ticket   string `json:"ticket"`
+	UnitID   int64  `json:"unit_id"`
+	UAccount string `json:"uid_str"`
+}
 
 func (u *user) getName() string {
 	return u.name
@@ -18,18 +30,45 @@ func (u *user) getName() string {
 
 func main() {
 	reflectField()
-	reflectCallNotExportObjFunc()
+	//reflectCallNotExportObjFunc()
+	reflectInterface()
 }
 
 func reflectField() {
 	var u = user{name:"songcf", age:25}
 	var v = reflect.ValueOf(u)
-	var fieldNum = v.NumField()
-	for i:=0; i<fieldNum; i++ {
-		fmt.Println(v.Type().Field(i).Name, "(",
-			v.Type().Field(i).Type, ") : ",
-			v.Field(i), ", ",
-			v.Type().Field(i).Tag)
+
+	if v.FieldByName("TAuth").Kind() == reflect.Invalid {
+		var fieldNum = v.NumField()
+		for i:=0; i<fieldNum; i++ {
+			fmt.Println(v.Type().Field(i).Name, "(",
+				v.Type().Field(i).Type, ") : ",
+				v.Field(i), ", ",
+				v.Type().Field(i).Tag)
+		}
+	}
+}
+
+func reflectInterface() {
+	a := TAuth{
+		UID:1,
+		Ticket:"ticket",
+		UnitID:11,
+		UAccount:"account",
+	}
+	var u = user2{name:"songcf", age:25, TAuth:a}
+	var uu interface{} = &u
+	var rv = reflect.ValueOf(uu).Elem()
+	if rv.Kind() != reflect.Struct {
+		panic("reflectInterface error!!!!")
+	}
+	auth := rv.FieldByName("TAuth")
+	if auth.Kind() != reflect.Invalid {
+		str := ""
+		for j:=0; j<auth.NumField(); j++ {
+			str += fmt.Sprintf("%v:%v\n", auth.Type().Field(j).Name, auth.Field(j))
+		}
+		fmt.Println("str: ", str)
 	}
 }
 

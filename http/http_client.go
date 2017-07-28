@@ -10,7 +10,7 @@ import (
 	"log"
 )
 
-const addr = "http://127.0.0.1:4000"
+//const addr = "http://127.0.0.1:4000"
 
 
 type HelloHttp struct {}
