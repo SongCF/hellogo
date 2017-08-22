@@ -29,9 +29,30 @@ func (u *user) getName() string {
 }
 
 func main() {
-	reflectField()
+	//reflectField()
 	//reflectCallNotExportObjFunc()
-	reflectInterface()
+	//reflectInterface()
+	child()
+}
+
+func child() {
+	a := TAuth{
+		UID:1,
+		Ticket:"ticket",
+		UnitID:11,
+		UAccount:"account",
+	}
+	var u = user2{name:"songcf", age:25, TAuth:a}
+	var uu interface{} = &u
+	rv := reflect.ValueOf(uu).Elem()
+	childV := rv.FieldByName("TAuth")
+
+	rt := reflect.TypeOf(uu).Elem()
+	stt, _ := rt.FieldByName("TAuth")
+	fmt.Println(stt.Type.Name())
+
+	fmt.Println(childV.FieldByName("Ticket").String())
+
 }
 
 func reflectField() {
@@ -59,6 +80,14 @@ func reflectInterface() {
 	var u = user2{name:"songcf", age:25, TAuth:a}
 	var uu interface{} = &u
 	var rv = reflect.ValueOf(uu).Elem()
+
+	var te interface{} = a.Ticket
+	fmt.Println("......kind1: ",reflect.ValueOf(uu).Kind())
+	fmt.Println("......kind2: ", reflect.ValueOf(te).Kind())
+	fmt.Println("......kind3: ", reflect.ValueOf(a.Ticket).Kind())
+	fmt.Println("......kind4: ", reflect.ValueOf(a).Kind())
+	fmt.Println("......kind5: ", reflect.ValueOf(a).Kind())
+
 	if rv.Kind() != reflect.Struct {
 		panic("reflectInterface error!!!!")
 	}
